@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    group = 'com.luizalabs.orders'
+    version = '1.0.0'
+
+    apply plugin: 'com.diffplug.spotless'
+
+    spotless {
+        java {
+            target 'src/**/*.java'
+            targetExclude '**/build/**', '**/bin/**'
+
+            googleJavaFormat('1.19.2').aosp().reflowLongStrings()
+
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+
+        format 'gradle', {
+            target '*.gradle', '**/*.gradle'
+            targetExclude '**/build/**'
+            trimTrailingWhitespace()
+            indentWithSpaces(4)
+            endWithNewline()
+        }
+
+        format 'yaml', {
+            target '**/*.yml', '**/*.yaml'
+            targetExclude '**/build/**'
+            trimTrailingWhitespace()
+            indentWithSpaces(2)
+            endWithNewline()
+        }
+
+        format 'markdown', {
+            target '**/*.md'
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+    }
+}
+
+tasks.register('format') {
+    description = 'Apply code formatting to all files'
+    group = 'formatting'
+    dependsOn subprojects.collect { it.tasks.named('spotlessApply') }
+}
+
+tasks.register('checkFormat') {
+    description = 'Check if code is formatted correctly'
+    group = 'formatting'
+    dependsOn subprojects.collect { it.tasks.named('spotlessCheck') }
+}

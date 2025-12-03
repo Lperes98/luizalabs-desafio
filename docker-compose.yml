@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: luizalabs-postgres
+    environment:
+      POSTGRES_DB: orders_db
+      POSTGRES_USER: usr_orders_db
+      POSTGRES_PASSWORD: pw_orders_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
+

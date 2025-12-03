@@ -1,0 +1,22 @@
+plugins {
+    id 'spring-conventions'
+}
+
+dependencies {
+    api project(':common')
+    api project(':domain')
+
+    implementation libs.springBootStarter
+    implementation libs.springBootWeb
+    implementation 'org.springframework:spring-tx:6.1.2'
+
+    compileOnly 'org.slf4j:slf4j-api:2.0.9'
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.bundles.testEcosystem
+    testRuntimeOnly libs.junitPlatform
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+}

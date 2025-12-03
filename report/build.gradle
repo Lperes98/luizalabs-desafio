@@ -1,0 +1,111 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+dependencies {
+    testImplementation libs.bundles.testEcosystem
+}
+
+def testProjects = [
+    project(':common'),
+    project(':use-case')
+]
+
+tasks.register('jacocoAggregateReport', JacocoReport) {
+    group = 'verification'
+    description = 'Generates aggregate Jacoco coverage report from all subprojects'
+
+    dependsOn testProjects*.test
+
+    additionalSourceDirs.from files(testProjects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from files(testProjects.sourceSets.main.allSource.srcDirs)
+
+    classDirectories.from files(testProjects.collect { project ->
+        fileTree(dir: project.sourceSets.main.output.classesDirs.singleFile, exclude: [
+            '**/*Application.class',
+            '**/*Application$*.class',
+
+            '**/*Config.class',
+            '**/*Config$*.class',
+            '**/*Configuration.class',
+            '**/*Configuration$*.class',
+
+            '**/entity/**',
+            '**/table/**',
+            '**/*Table.class',
+            '**/*Table$*.class',
+            '**/*Entity.class',
+            '**/*Entity$*.class',
+
+            '**/dto/**',
+            '**/*DTO.class',
+            '**/*DTO$*.class',
+            '**/*Request.class',
+            '**/*Request$*.class',
+            '**/*Response.class',
+            '**/*Response$*.class',
+            '**/request/**',
+            '**/response/**',
+
+            '**/*$LogInfo.class',
+            '**/*$ParseResult.class',
+            '**/*$OrderKey.class',
+            '**/*Info.class',
+            '**/*Info$*.class',
+
+            '**/mapper/**',
+            '**/*Mapper.class',
+            '**/*Mapper$*.class',
+            '**/*MapperImpl.class',
+            '**/*MapperImpl$*.class',
+
+            '**/exception/**',
+            '**/*Exception.class',
+            '**/*Exception$*.class',
+
+            '**/enums/**',
+            '**/*Enum.class',
+            '**/*Enum$*.class',
+
+            '**/domain/entity/**',
+            '**/domain/dto/**',
+            '**/domain/exception/**',
+            '**/domain/enums/**',
+            '**/domain/mapper/**',
+
+            '**/port/**',
+            '**/*Port.class',
+            '**/*Port$*.class',
+
+            '**/data/**',
+            '**/*Data.class',
+            '**/*Data$*.class',
+
+            '**/model/**',
+            '**/valueobject/**',
+
+            '**/*Doc.class',
+            '**/*Doc$*.class',
+            '**/doc/**'
+        ])
+    })
+
+    executionData.from files(testProjects.collect {
+        it.tasks.test.jacoco.destinationFile
+    }.findAll { it.exists() })
+
+    reports {
+        xml.required = true
+        html.required = true
+        html.outputLocation = layout.buildDirectory.dir('reports/jacoco/jacocoAggregateReport/html')
+        xml.outputLocation = layout.buildDirectory.file('reports/jacoco/jacocoAggregateReport/jacocoAggregateReport.xml')
+    }
+
+    doLast {
+        def htmlReport = layout.buildDirectory.file('reports/jacoco/jacocoAggregateReport/html/index.html').get().asFile
+        println "\n Relatório agregado gerado:"
+        println " ${htmlReport.absolutePath}"
+        println "file://${htmlReport.absolutePath}\n"
+    }
+}

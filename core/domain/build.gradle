@@ -1,0 +1,19 @@
+plugins {
+    id 'java-conventions'
+}
+
+dependencies {
+    api project(':common')
+
+    implementation libs.bundles.jacksonEcosystem
+
+    compileOnly libs.bundles.jakartaEcosystem
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.bundles.testEcosystem
+    testRuntimeOnly libs.junitPlatform
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+}

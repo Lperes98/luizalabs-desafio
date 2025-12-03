@@ -1,0 +1,16 @@
+rootProject.name = 'luizalabs-desafio'
+
+include(
+    ':common',
+    ':domain',
+    ':use-case',
+    ':data-provider',
+    ':api',
+    ':report'
+)
+
+project(':domain').projectDir = file('core/domain')
+project(':use-case').projectDir = file('core/use-case')
+project(':data-provider').projectDir = file('adapter/data-provider')
+project(':api').projectDir = file('app/api')
+

@@ -1,0 +1,27 @@
+plugins {
+    id 'spring-conventions'
+}
+
+dependencies {
+    api project(':use-case')
+
+    implementation libs.springBootStarter
+    implementation libs.bundles.jacksonEcosystem
+
+    implementation libs.bundles.databaseEcosystem
+    runtimeOnly libs.postgresql
+
+    implementation libs.bundles.jakartaEcosystem
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstructProcessor
+
+    testImplementation libs.bundles.testEcosystem
+    testImplementation libs.bundles.springTestEcosystem
+    testRuntimeOnly libs.junitPlatform
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+}

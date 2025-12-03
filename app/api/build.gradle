@@ -1,0 +1,37 @@
+plugins {
+    id 'spring-conventions'
+}
+
+tasks.named('bootJar') {
+    enabled = true
+}
+
+tasks.named('jar') {
+    enabled = false
+}
+
+dependencies {
+    implementation project(':use-case')
+    implementation project(':data-provider')
+
+    implementation libs.bundles.springWebEcosystem
+
+    implementation libs.bundles.springEcosystem
+
+    implementation libs.bundles.databaseEcosystem
+    runtimeOnly libs.postgresql
+
+    implementation libs.bundles.jacksonEcosystem
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstructProcessor
+
+    testImplementation libs.bundles.testEcosystem
+    testImplementation libs.bundles.springTestEcosystem
+    testRuntimeOnly libs.junitPlatform
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+}

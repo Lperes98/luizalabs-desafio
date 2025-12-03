@@ -1,0 +1,119 @@
+plugins {
+    id 'java-library'
+    id 'jacoco'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = false
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.11'
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        html.required = true
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                '**/*Application.class',
+                '**/*Application$*.class',
+
+                '**/*Config.class',
+                '**/*Config$*.class',
+                '**/*Configuration.class',
+                '**/*Configuration$*.class',
+
+                '**/entity/**',
+                '**/table/**',
+                '**/*Table.class',
+                '**/*Table$*.class',
+                '**/*Entity.class',
+                '**/*Entity$*.class',
+
+                '**/dto/**',
+                '**/*DTO.class',
+                '**/*DTO$*.class',
+                '**/*Request.class',
+                '**/*Request$*.class',
+                '**/*Response.class',
+                '**/*Response$*.class',
+                '**/request/**',
+                '**/response/**',
+
+                '**/*$LogInfo.class',
+                '**/*$ParseResult.class',
+                '**/*$OrderKey.class',
+                '**/*Info.class',
+                '**/*Info$*.class',
+
+                '**/mapper/**',
+                '**/*Mapper.class',
+                '**/*Mapper$*.class',
+                '**/*MapperImpl.class',
+                '**/*MapperImpl$*.class',
+
+                '**/exception/**',
+                '**/*Exception.class',
+                '**/*Exception$*.class',
+
+                '**/enums/**',
+                '**/*Enum.class',
+                '**/*Enum$*.class',
+
+                '**/domain/entity/**',
+                '**/domain/dto/**',
+                '**/domain/exception/**',
+                '**/domain/enums/**',
+                '**/domain/mapper/**',
+
+                '**/port/**',
+                '**/*Port.class',
+                '**/*Port$*.class',
+
+                '**/data/**',
+                '**/*Data.class',
+                '**/*Data$*.class',
+
+                '**/model/**',
+                '**/valueobject/**',
+
+                '**/*Doc.class',
+                '**/*Doc$*.class',
+                '**/doc/**'
+            ])
+        }))
+    }
+}

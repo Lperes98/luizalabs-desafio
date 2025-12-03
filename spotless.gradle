@@ -1,0 +1,67 @@
+apply plugin: 'com.diffplug.spotless'
+
+spotless {
+    java {
+        target 'src/**/*.java'
+        targetExclude '**/build/**', '**/bin/**'
+
+        importOrder()
+        removeUnusedImports()
+
+        googleJavaFormat('1.19.2').aosp().reflowLongStrings()
+
+        trimTrailingWhitespace()
+        endWithNewline()
+
+        custom 'Single imports only', {
+            if (it.contains('import ') && it.contains('.*')) {
+                throw new IllegalArgumentException(
+                    "Wildcard imports are not allowed. Please use individual imports. " +
+                    "Run './gradlew spotlessApply' to auto-fix."
+                )
+            }
+        }
+
+        indentWithSpaces(4)
+
+    }
+
+    format 'gradle', {
+        target '*.gradle', '**/*.gradle'
+        targetExclude '**/build/**'
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+
+    format 'yaml', {
+        target '**/*.yml', '**/*.yaml'
+        targetExclude '**/build/**'
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+
+    format 'markdown', {
+        target '**/*.md'
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+tasks.named('check') {
+    dependsOn 'spotlessCheck'
+}
+
+tasks.register('format') {
+    description = 'Applies code formatting to all files'
+    group = 'formatting'
+    dependsOn 'spotlessApply'
+}
+
+tasks.register('checkFormat') {
+    description = 'Checks if code is formatted correctly'
+    group = 'formatting'
+    dependsOn 'spotlessCheck'
+}
+

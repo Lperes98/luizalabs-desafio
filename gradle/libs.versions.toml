@@ -1,0 +1,65 @@
+[versions]
+java = "21"
+springBoot = "3.4.1"
+springDependencyManagement = "1.1.7"
+springdoc = "2.7.0"
+spotless = "6.25.0"
+lombok = "1.18.30"
+mapstruct = "1.6.3"
+jacksonVersion = "2.18.2"
+jupiterVersion = "5.11.4"
+mockitoVersion = "5.15.2"
+assertjVersion = "3.27.3"
+flywayCoreVersion = "9.22.3"
+testcontainersVersion = "1.19.3"
+jakartaPersistenceVersion = "3.2.0"
+jakartaTransactionVersion = "2.0.1"
+jakartaAnnotationVersion = "3.0.0"
+
+[libraries]
+springBootStarter = { module = "org.springframework.boot:spring-boot-starter" }
+springBootWeb = { module = "org.springframework.boot:spring-boot-starter-web" }
+springBootDataJpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+springBootValidation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+springBootActuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+
+postgresql = { module = "org.postgresql:postgresql" }
+flyway = { module = "org.flywaydb:flyway-core", version.ref = "flywayCoreVersion" }
+
+jakartaPersistence = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "jakartaPersistenceVersion" }
+jakartaTransaction = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakartaTransactionVersion" }
+jakartaAnnotation = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakartaAnnotationVersion" }
+
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstructProcessor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+
+jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jacksonVersion" }
+jacksonDatatype = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jacksonVersion" }
+
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+
+springBootTest = { module = "org.springframework.boot:spring-boot-starter-test" }
+springBootTestcontainers = { module = "org.springframework.boot:spring-boot-testcontainers" }
+testcontainersJupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainersVersion" }
+testcontainersPostgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainersVersion" }
+junitPlatform = { module = "org.junit.platform:junit-platform-launcher" }
+junitJupiterApi = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiterVersion" }
+junitJupiterEngine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiterVersion" }
+mockitoCore = { module = "org.mockito:mockito-core", version.ref = "mockitoVersion" }
+mockitoJupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockitoVersion" }
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertjVersion" }
+
+[bundles]
+jakartaEcosystem = ["jakartaPersistence", "jakartaTransaction", "jakartaAnnotation"]
+databaseEcosystem = ["springBootDataJpa", "flyway"]
+springEcosystem = ["springBootStarter"]
+jacksonEcosystem = ["jacksonDatabind", "jacksonDatatype"]
+springWebEcosystem = ["springBootActuator", "springBootWeb", "springBootValidation", "springdoc"]
+springTestEcosystem = ["springBootTest", "springBootTestcontainers", "testcontainersJupiter", "testcontainersPostgresql"]
+testEcosystem = ["junitJupiterApi", "junitJupiterEngine", "mockitoCore", "mockitoJupiter", "assertj"]
+
+[plugins]
+springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
+springDependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

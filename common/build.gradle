@@ -1,0 +1,16 @@
+plugins {
+    id 'java-conventions'
+}
+
+dependencies {
+    implementation libs.jacksonDatabind
+    implementation libs.jacksonDatatype
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.bundles.testEcosystem
+    testRuntimeOnly libs.junitPlatform
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+}
